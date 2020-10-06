@@ -1,0 +1,355 @@
+<!doctype html>
+
+<html>
+
+<head><title></title>
+    
+    
+    <style>
+        #thecontainer{
+            background-color: #9DD2EA;
+            height:450px;
+            width:600px;
+            margin:auto;
+            margin-top: 100px;
+            border-bottom: 4px solid blue;
+            border-radius: 10px;
+            position: relative;
+            animation: kebe 8s infinite;
+        }
+        @keyframes kebe{
+            from{background-color:green; }
+            to{background-color: blue;}
+        }
+        #scorediv{
+            height:40px;
+            width:80px;
+            text-align: center;
+            line-height: 40px;
+            background-color:#F1FF92;
+            left: 500px;
+            top: 20px;
+            position:absolute;
+            border-bottom: 3px solid green;
+            color:#888E5F;
+            animation:score 10s ;
+            }
+        @keyframes score{
+            from{background:red; left:0px;}
+            to{left:500px;}
+        }
+        #seconddiv{
+            height:150px;
+            width:80%;
+            background:linear-gradient(45deg,blue,yellow);
+            position:absolute;
+            top:75px;
+            margin-left: 55px;
+            border-bottom:3px solid purple;
+            line-height: 150px;
+            text-align: center;
+            font-size: 80px;
+            
+            font-family: monospaceline-height: 150px;
+            
+        }
+        #thirddiv{
+            height:50px;
+            width:80%;
+            margin-left: 55px;
+            position:absolute;
+            top:235px;
+            background-color:yellowgreen;
+            border-bottom:3px solid #8153a8;
+            
+        }
+        #fourthdiv{
+            
+            position:absolute;
+            top:300px;
+            margin-left: 55px;
+            height:75px;
+            width: 80%;
+            display:flex;
+            flex-direction:row;
+            justify-content:space-between
+        }
+        #fourthdiv div{
+            height:85px;
+            width:90px;
+            background-color:navy;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 85px;
+            font-size: 50px;
+            font-family:sans-serif
+                
+        }
+        #start{
+            background-color:rgba(255,255,255,0.5);
+            height:40px;
+            width:90px;
+            position:absolute;
+            text-align: center;
+            line-height: 50px;
+            bottom:5px;
+            border-radius: 5px;
+            margin-left: 250px;
+            cursor: pointer;
+            
+        }
+        #correct{
+            position:absolute;
+            top:22px;
+            left:250px;
+            background-color: green;
+            height:40px;
+            width:80px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 3px;
+            display:none;
+            
+        } #wrong{
+            position:absolute;
+            top:22px;
+            left:250px;
+            background-color:red;
+            height:40px;
+            width:80px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 3px;
+        display:none;
+            
+        }
+        #timerdiv{
+            position:absolute;
+            top:410px;
+            right:10px;
+            height:30px;
+            width: 120px;
+            background-color: chartreuse;
+            text-align: center;
+            line-height: 30px;
+            display:none;
+            border-radius: 5px;
+        }
+        #endgamedisplay{
+            position:absolute;
+            top:85px;
+            height:190px;
+            width:85%;
+            background:linear-gradient(90deg,red,green);
+            text-align: center;
+            left:7.5%;
+        line-height: 50px;
+        font-size: 30px;
+        display:none;
+        }
+       
+    </style>
+    
+    
+    </head>
+
+
+<body>
+    
+    
+    <div id="thecontainer">
+              <div id="correct">correct</div>
+              <div id="wrong">wrong</div>
+              <div id="scorediv"> Score: <span id="score">0</span></div>
+              <div id="seconddiv"> <span id="firstnum"></span><span id="s"></span><span id="secondnum"></span></div>
+              <div id="thirddiv"><div style="padding-top: 20px;padding-left: 120px"> Click on the corect answer</div></div>
+              <div id="fourthdiv">
+                  <div id="box1"></div>
+                  <div id="box2"></div>
+                  <div id="box3"></div>
+                  <div id="box4"></div>
+              </div>
+
+              <div id="start">Start Game</div>
+              <div id="timerdiv"><span>time remaining:</span><span id="time">0</span></div>
+              <div id="endgamedisplay"><p>GAME OVER!</p><p>YOUR SCORE IS <span id="scoredisplay">0</span>.</p></div>
+    </div>
+    
+    
+    <script>
+    //declare all variables
+        var score;
+        var timeleft
+        var correctanswer;
+        var timer;
+        var playing =false;
+        
+        
+        
+        
+        // declare all functions
+        //stoptimer
+        //showquestionandanswers
+        
+        //starttimer
+        //hide
+        //show
+        
+        //writing the function
+        //show
+        function generatequestionandanswers(){
+            //gives question
+             var x=1+(Math.floor(Math.random()*10));
+            document.getElementById("firstnum").innerText=x;
+            var y=1+(Math.floor(Math.random()*10));
+            document.getElementById("secondnum").innerText=y;
+            
+            document.getElementById("s").innerText="x";
+            //gives answers
+             correctanswer=x*y;
+        var answers=[correctanswer];
+          
+            var randompositions=[];
+            //generate wrong answers;
+            while(answers.length<4){
+                var wronganswer=1+Math.floor(Math.random()*99);
+                
+                if(wronganswer!=correctanswer){
+                    answers.push(wronganswer)
+                }
+            }
+             
+            
+            var i=0;
+            while (randompositions.length<4){
+                var randpos=Math.floor(Math.random()*4);
+                if (randompositions.includes(randpos)==false){
+                    randompositions[i]=randpos;
+                    i++;
+                    
+                }
+            }
+            console.log(answers);
+            console.log(randompositions);
+            
+
+                for(i=1; i<=4;i++)
+            {
+                
+                document.getElementById("box"+i).innerText=answers[randompositions[i-1]];
+            }
+            
+        }
+            
+        function  show(id){
+     document.getElementById(id).style.display="block"
+            
+        }
+        //hide
+    function  hide(id){
+     document.getElementById(id).style.display="none"
+            
+        }
+    //starttimer
+        function startTimer(){
+            timer=setInterval(function(){
+            --timeleft;
+            show("timerdiv");
+            document.getElementById("time").innerText=timeleft;
+                
+                if(timeleft==0){
+                    stoptimer();
+                    show("endgamedisplay");
+                    playing=false;
+                    cleartext();
+                    hide("timerdiv");
+                    document.getElementById("scoredisplay").innerText=score;
+                }
+            },2000);
+        }
+    
+    function stoptimer(){
+        clearInterval(timer);
+    }
+    
+        document.getElementById("start").onclick=function(){
+this.innerText="Reset Game";
+            
+            //check if we are playing
+            if(playing==false){
+                //start playing
+                playing=true;
+                timeleft=60
+                score=0;
+                 startTimer();
+                document.getElementById("score").innerText=score;
+                generatequestionandanswers();
+                
+            }
+            //stop playing
+            else{
+                location.reload();   
+           }
+            
+            
+        }
+        
+       
+        
+        
+        
+        //addig event to the answers
+        for (j=1;j<=4;j++)
+        {
+            document.getElementById("box"+j).onclick=function(){
+                
+                if (playing==true){
+                    if(this.innerText==correctanswer){
+                        
+                        show("correct");
+                        hide("wrong");
+                        ++score;
+                        document.getElementById("score").innerText=score;
+                        generatequestionandanswers();
+                        setTimeout(function(){hide("correct");},1000)
+                    }
+                    else{
+                        show("wrong");
+                        hide("correct");
+                        setTimeout(function(){
+                            
+                            hide("wrong");
+                            
+                        },1000)
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+            }
+        }
+            function cleartext(){
+                
+                document.getElementById("box1").innerText="";
+                document.getElementById("box2").innerText="";
+                document.getElementById("box3").innerText="";
+                document.getElementById("box4").innerText="";
+                document.getElementById("seconddiv").innerText="";
+            }
+            
+            
+            
+        
+        
+        
+    </script>
+    
+    </body>
+
+</html>
